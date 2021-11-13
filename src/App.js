@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Typography, TextField, CircularProgress } from "@material-ui/core";
+import { Typography, TextField } from "@material-ui/core";
 import useStyles from "./styles";
 import SpotifyComponent from "./spotifyComponent";
 import { choosePlaylist } from "./playlists";
@@ -8,36 +8,43 @@ import getSentiment from "./sentiment";
 function App() {
   const classes = useStyles();
   const [story, setStory] = useState("");
-  const [spinnerOn, setSpinnerOn] = useState(false);
+  const [spotOn, setSpotOn] = useState(false);
   const [playlist, setPlaylist] = useState({
     spotifyLink: "",
     playlistimageLink: "",
     message: "Talk about your day.",
-    color: "green",
+    color: "rgb(0, 0, 0)",
   });
 
   useEffect(() => {
     async function fetchSentiment() {
-      setSpinnerOn(true);
       let sentiment = await getSentiment(story);
       let pl = await choosePlaylist(sentiment);
       setPlaylist(pl);
+      setSpotOn(true);
     }
     if (story === "") {
       setPlaylist({
         spotifyLink: "",
         playlistimageLink: "",
         message: "Talk about your day.",
-        color: "green",
+        color: "rgb(0, 0, 0)",
       });
-      setSpinnerOn(false);
+      setSpotOn(false);
     } else {
-      fetchSentiment();
+      const timeOutId = setTimeout(() => fetchSentiment(), 200);
+      return () => clearTimeout(timeOutId);
     }
   }, [story]);
 
   return (
-    <div className={classes.body}>
+    <div
+      id="body"
+      className={classes.body}
+      style={{
+        backgroundImage: `linear-gradient(${playlist.color})`,
+      }}
+    >
       <div
         className={classes.main}
         style={{
@@ -52,6 +59,9 @@ function App() {
             top: "17%",
             fontFamily: "Zen Kurenaido",
             fontWeight: "900",
+            backgroundColor: "rgba(40, 44, 52, 0.5)",
+            padding: "10px",
+            borderRadius: "10px",
           }}
         >
           {playlist.message === "" ? "How was your day?" : playlist.message}
@@ -62,8 +72,8 @@ function App() {
           id="outlined-basic"
           label=""
           variant="outlined"
-          placeholder=" Please tell"
-          style={{ position: "absolute", top: "190px", width: "40%" }}
+          placeholder="  Let the words flow.."
+          style={{ position: "absolute", top: "25%", width: "40%" }}
           InputProps={{
             className: classes.input,
             classes: {
@@ -71,15 +81,17 @@ function App() {
             },
           }}
         />
-        {spinnerOn ? (
-          <CircularProgress className={classes.spinner} color="white" />
+
+        {spotOn ? (
+          <SpotifyComponent
+            spotifyLink={playlist.spotifyLink}
+            style={{
+              height: "20%",
+            }}
+          />
         ) : (
           <></>
         )}
-        <SpotifyComponent
-          spotifyLink={playlist.spotifyLink}
-          style={{ height: "20%" }}
-        />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   body: {
     backgroundImage:
-      "linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0), rgb(69, 187, 0))",
+      "linear-gradient(rgb(0, 0, 0), rgb(40, 44, 52), rgb(36, 48, 156))",
     opacity: "3.0",
   },
   main: {
@@ -12,15 +12,16 @@ export default makeStyles((theme) => ({
     margin: "auto",
     background: "#282c34",
     minHeight: "100vh",
-    width: "50vw",
+    width: "min(80vw, 900px)",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     color: "white",
+    boxShadow: "0px 0px 12px 10px rgba(255,255,255,0.8)",
   },
   textBox: {
-    width: "50%",
+    width: "max(30%, 300px)",
     height: "20%",
     margin: "30px 20px",
     textShadow: "2px",
@@ -37,18 +38,18 @@ export default makeStyles((theme) => ({
     position: "absolute",
     marginTop: "20px",
     top: "10%",
-    fontFamily: "Permenent Marker",
-    fontSize: "calc(10px + 2vmin)",
     color: "white",
-    textShadow: "5px, black",
+    backgroundColor: "black",
   },
   spotify: {
     position: "absolute",
-    bottom: "25px",
+    top: "50%",
     left: "50%",
     transform: "translateX(-50%)",
-    width: "500px",
-    height: "500px",
+    width: "min(500px, 100vw)",
+    height: "calc(50px + 40%)",
+    opacity: ".85",
+    boxShadow: "0px 1px 10px 9px rgba(255,255,255,0.8)",
   },
   spinner: {
     position: "absolute",

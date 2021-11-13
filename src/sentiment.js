@@ -27,7 +27,6 @@ async function getSentiment(story) {
   const res = await fetch(req);
   const resJson = await res.json();
   let polarity = resJson.result.polarity;
-  console.log("POLAR", polarity);
   return polarity;
 }
 export default getSentiment;
