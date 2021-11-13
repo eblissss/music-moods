@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { Typography, TextField } from "@material-ui/core";
+import useStyles from "./styles";
+import SpotifyComponent from "./musicRequest";
+import { choosePlaylist } from "./playlists";
 
 function App() {
+  const classes = useStyles();
+  const [story, setStory] = useState("");
+  const [score, setScore] = useState(1);
+  const [spotifyLink, setSpotifyLink] = useState("");
+  const [imageLink, setImageLink] = useState("");
+
+  useEffect(() => {
+    let [sL, iL] = choosePlaylist(score);
+    setSpotifyLink(sL);
+    setImageLink(iL);
+  }, [score]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.main}>
+      {/* <img src={logo} className="App-logo" alt="logo" /> */}
+      <Typography variant="h4" className="header">
+        Talk About Your Day.
+      </Typography>
+      <TextField
+        //onChange={(e) => setStory(e.target.value)}
+        onChange={(e) => setScore(parseInt(e.target.value))}
+        className={classes.textBox}
+        id="outlined-basic"
+        label=""
+        variant="outlined"
+        placeholder="Do tell."
+        InputProps={{
+          className: classes.input,
+          classes: {
+            notchedOutline: classes.notchedOutline,
+          },
+        }}
+      />
+      <SpotifyComponent spotifyLink={spotifyLink} imageLink={imageLink} />
     </div>
   );
 }
